@@ -21,7 +21,30 @@ module.exports = function(app) {
 			res.json(dbUsers);
 		});
 		
+	});
+
+	//  user sign in authenthication and redirect
+	app.post("/signIn", function(req,res) {
+		var passwordInput = req.body.password;
+		console.log("sign in post work");
+		console.log("sign in Request: " + JSON.stringify(req.body) );
+		db.Users.findOne({
+			where: {
+				email: req.body.email
+			}
+		}).then(function(results) {
+			console.log("search results" + JSON.stringify(results))
+			if (passwordInput === results.password) {
+				console.log("correct password");
+				var encodedID = (results.id + 173) * 9;
+				res.redirect("/"+ encodedID);
+			}
+
+		})
 	})
+
+
+
 	// route that updates user --- needs work
 	app.put("/users", function(req, res) {
 		console.log("update cupon working");
@@ -33,7 +56,7 @@ module.exports = function(app) {
 
 			}
 		}).then(function(dbPost) {
-			res.jsom(dbPost)
+			res.json(dbPost)
 		});
 	});
 	// route that adds new bussines
@@ -56,7 +79,7 @@ module.exports = function(app) {
 
 			}
 		}).then(function(dbPost) {
-			res.jsom(dbPost)
+			res.json(dbPost)
 		});
 	});
 
@@ -76,13 +99,16 @@ module.exports = function(app) {
 			return res.json(dbFavorites)
 		})
 	});
+
 	// api call adds cupon -- need help
 	app.post("/api/deals", function(req, res) {
 		req.body.daysAvailable = req.body.daysAvailable.toString();
+		console.log("add cupon body: " + JSON.stringify(req.body));
 		db.Deals.create(req.body).then(function(dbDeals) {
 			res.json(dbDeals);
 		});
 	});
+
 	// api call: delete cupon
 	app.delete("/api/deals/:cuponId", function(req, res) {
 		db.Deals.destroy({

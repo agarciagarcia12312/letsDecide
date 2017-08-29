@@ -1,10 +1,22 @@
-<form class="create-update-form" action="/" method = "POST" id="addBurger" style="display: none;">
-			<h2><u>Add Burger to list</u></h2>
+<form class="signIn" action="/signIn" method = "POST"> 
 			
-			<div class="form-group">
-		    	<label for="ca">Burger Name:</label><br>
-		    	<input type="text" id="ca" name="name">
-		  	</div> 
+	      <!-- email -->
+	      <div class="form-group row has-danger">
+	        <label for="email" class="col-sm-2 col-form-label">Email address</label>
+	        <div class="col-sm-8 input-group">
+	            <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+	            <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" required>
+	        </div>
+	      </div>
+	      <!-- password  -->
+	      <div class="form-group row has-danger">
+	        <label for="password" class="col-sm-2 col-form-label">Password</label>
+	        <div class="col-sm-8 input-group">
+	          <span class="input-group-addon"><i class="glyphicon glyphicon-question-sign"></i></span>
+	          <input type="password" name="password" class="form-control" id="password" placeholder="Password" required>
+	        </div>
+	      </div>
 
-		  	<button type="submit" id="add">Add Burger</button>
+
+		  	<button type="submit" id="signIn">Sign In</button>
 </form>

@@ -1,7 +1,7 @@
 module.exports = function(sequelize, DataTypes) {
 	var Deals = sequelize.define("Deals", {
 		// deal tittle string
-		title: {
+		tittle: {
 			type: DataTypes.STRING,
     	 	allowNull: false,
       		validate: {

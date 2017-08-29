@@ -1,6 +1,7 @@
 
 var db = require("../models");
 var express = require("express");
+
 // var path = require("path");
 // var app = express.Router();
 
@@ -10,21 +11,21 @@ var router = express.Router();
 // ==========customer/user routes==============
 	// express router for main user page
 	router.get("/:userId?", function(req, res) {
-		var userId = req.params.userId;
+		var DecodedId = (req.params.userId /9) -173;
 		var userName = "";
-		console.log(userId)
-		db.Users.findOne({
+		console.log(DecodedId)
+	
+		if (DecodedId) {
+			db.Users.findOne({
 			where: {
-				id: userId
+				id: DecodedId
 			}
 		}).then(function(results) {
 			userName = results.userName;
 			console.log("name: " + results.userName);
+			console.log("individual working");
+			res.render("index", {layout: 'loggedIn.handlebars', userName: userName} );
 		})
-		if (userId) {
-
-			console.log("individual working")
-			res.render("index",{userName: userName} )
 		} else {
 			console.log("main page working");
 			res.render("index");
@@ -33,26 +34,47 @@ var router = express.Router();
 	// express router for deals page
 	router.get("/deals/:category/:userID?", function(req, res) {
 		var category = req.params.category;
+		var returnObject ={};
 		var userId = req.params.userID;
-		var dealsObject ={};
-
+		console.log(userId);
+		console.log("category: " + category)
+		// looks in database for all deals with that category
 		db.Deals.findAll({
 			where: {
 				category: category
-			}
+			}, 
+			include: [db.Business]
 		}).then(function(results){
-			dealsObject = results;
-			console.log(dealsObject);
-		})
-		// needs work below: adding user name to
-		// if (userId) {
-		// 	// need to add user 
-		// 	console.log("individual working")
-		// 	res.render("deals", dealsObject )
-		// } else {
-		// 	console.log("main page working");
-		// 	res.render("deals", dealsObject);
-		// }
+			console.log("category: " + category)
+			// console.log("results" + JSON.stringify(results));
+			returnObject.deals = results;
+
+			
+			// res.render("deals", returnObject)
+			if (userId>1) {
+				var DecodedId = (userId /9) -173;
+
+				db.Users.findOne({
+					where: {
+						id: DecodedId
+					}
+				}).then(function(results) {
+					returnObject.userInfo = results;
+					console.log("return object with users:   " + JSON.stringify(returnObject))
+					// needs work not working properly
+					res.render("deals", {returnObject, layout: 'loggedIn.handlebars' });
+				})
+			
+			} else {
+				console.log("deals: ======= " + JSON.stringify(results));
+				console.log("return object:   " + JSON.stringify(returnObject));
+				res.render("deals", returnObject);
+			}
+		});
+
+		
+
+		
 	});
 	// express route for user favorites
 	router.get("/favorites/:userId", function(req, res) {

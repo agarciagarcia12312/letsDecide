@@ -1,0 +1,40 @@
+<br><br>
+<div class="row main-content">
+     
+     <div class="col-lg-3 sidebar">
+       <h3> Your Favorites
+       </h3>
+
+       <h3> Search criteria 
+       </h3>
+     </div>    
+
+
+     <div class="col-lg-9 food-deals">
+		<div class="row">       
+       		{{#each deals}}   
+       			<div class="col-lg-4">
+		           <div class="card">
+			             <div class="deal-card active front">
+
+			              <h6>
+			                 {{this.tittle}}
+			              </h6>
+			               <p class="deal-details">{{this.body}}</p>
+			               <hr>
+			              <p class="deal-info"> Available {{this.dealStart}} - {{this.dealEnd}}</p>
+			               <p class="deal-info"> {{this.Business.businessName}}</p>
+			             </div>
+			             <div class="deal-card deal-back active back">
+			               <p class="deal-info"> {{this.Business.businessName}}</p>
+			               <p class="deal-info"> {{this.Business.streetAddress}}</p>
+			               <p class="deal-info"> {{this.Business.city}}, {{this.Business.state}}</p>
+			               <p class="deal-info"> {{this.Business.phone}}</p>
+			               <a class="deal-link" href="{{this.Business.webLink}}" target='_blank'>Visit Website</a>
+			             </div>
+		           </div>
+        		</div>
+        	{{/each}} 
+    	</div>          
+    </div>    
+</div>

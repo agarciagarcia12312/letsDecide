@@ -8,11 +8,16 @@ const apiCall = function(searchQuery){
 	const clientId ="Bc_bnoDsBRpqiMnDgV5ZHg";
 	const clientSecret = "DyinsiGY2ZbAA2Y3GeGQfZP4nKh41hwtPvUUB0Y7c9IpMrrcJWs6bTNhQtWrfkGZ";
 
-	const searchRequest = {
- 	// term:'Four Barrel Coffee',
- 	location: 'denver, co',
- 	limit: 2
-	};
+	var searchRequest = searchQuery;
+	// const searchRequest = {
+ // /*	latitude = locationObject.lat,
+	// longitude = locationObject.lng,*/
+ // 	location: "denver, co" + /*locationSearch*/ + "",
+ // 	limit: 10,
+ // 	categories: "active",
+ // 	term: "" + /*findField*/ + "",
+ // 	price: "1,2"
+	// };
 
 
 	yelp.accessToken(clientId, clientSecret).then(response => {

@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "10654655",
+    "password": "",
     "database": "letsDecide_db",
     "host": "localhost",
     "dialect": "mysql"

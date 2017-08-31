@@ -41,6 +41,23 @@ module.exports = function(app) {
 			}
 
 		})
+	});
+
+	app.post("/bSignIN", function(req, res) {
+		var passwordInput =req.body.password;
+		console.log("business sign in working");
+		db.Business.findOne({
+			where: {
+				email: req.body.email
+			}
+		}).then(function(results) {
+			if (passwordInput === results.password) {
+				console.log("correct password");
+				var encodedID = (results.id + 173) * 9;
+				res.redirect("/business/"+ encodedID);
+			}
+
+		})
 	})
 
 

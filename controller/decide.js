@@ -9,16 +9,23 @@ var express = require("express");
 // module.exports  = function(app) {
 var router = express.Router();
 // ==========customer/user routes==============
+var signedIn = false;
+var signedIn_Id;
 	// express router for main user page
 	router.get("/:userId?", function(req, res) {
+		userID = req.params.userId;
 		var DecodedId = (req.params.userId /9) -173;
-		var userName = "";
-		console.log(DecodedId)
+		var userId = DecodedId;
+		console.log(DecodedId);
+		if (DecodedId>0) {
+			signedIn= true;
+			signedIn_Id = DecodedId;
+		}
 	
-		if (DecodedId) {
+		if (signedIn) {
 			db.Users.findOne({
 			where: {
-				id: DecodedId
+				id: signedIn_Id
 			}
 		}).then(function(results) {
 			userName = results.userName;
@@ -32,7 +39,7 @@ var router = express.Router();
 		}	
 	});
 	// express router for deals page
-	router.get("/deals/:category/:userID?", function(req, res) {
+	router.get("/deals/:category/", function(req, res) {
 		var category = req.params.category;
 		var returnObject ={};
 		var userId = req.params.userID;
@@ -51,18 +58,18 @@ var router = express.Router();
 
 			
 			// res.render("deals", returnObject)
-			if (userId>1) {
+			if (signedIn) {
 				var DecodedId = (userId /9) -173;
 
 				db.Users.findOne({
 					where: {
-						id: DecodedId
+						id: signedIn_Id
 					}
 				}).then(function(results) {
 					returnObject.userInfo = results;
 					console.log("return object with users:   " + JSON.stringify(returnObject))
 					// needs work not working properly
-					res.render("deals", {returnObject, layout: 'loggedIn.handlebars' });
+					res.render("deals", {deals: returnObject.deals, layout: 'loggedIn.handlebars' });
 				})
 			
 			} else {
@@ -97,44 +104,41 @@ var router = express.Router();
 	});
 
 	// express route for user sign in
-	router.get("/signIn/:database", function(req, res) {
-		var database = req.params.database;
-		if (database === "user") {
-			console.log("sign in user");
-			res.render("signIn", {database: "Users"})
-		} else if (database === "business") {
-			console.log("business sign In")
-			res.render("signIn", {datase: "Business"})
-		}
-	});
 	
-
+	router.get("/business/index", function(req, res) {
+		console.log("get working")
+		console.log("business login PAge working");
+		res.render("signIn", {layout: "businessPage.handlebars"})	 
+	});
 	
 	// bussiness side routes
 	// route for new business profile page
 	router.get("/business/new", function(req, res) {
 		console.log("get working")
-		 res.render("newBusiness")	 
+		 res.render("newBusiness",  {layout: "businessPage.handlebars"})	 
 	});
 	// route for main business page
-	router.get("/business/:id", function(req, res) {
+	router.get("/business/:id?", function(req, res) {
 		var businessId = req.params.id
-		db.Business.findOne({
-			where: {
-				id: businessId
-			}
-		}).then(function(results) {
-			console.log("business main working:  " + results);
-			res.render("bMain",results)
-		})
+		var DecodedId = (businessId /9) -173;
+			
+			db.Business.findOne({
+				where: {
+					id: DecodedId
+				}
+			}).then(function(results) {
+				console.log("business main working:  " + results);
+				res.render("bMain", results)
+			})
 		
 	});
 	// route that displays new deal page
 	router.get("/new-deal/:businessId", function(req,res) {
 		var businessId = req.params.businessId;
+		var DecodedId = (businessId /9) -173;
 		db.Business.findOne({
 			where: {
-				id: businessId
+				id: DecodedId
 			}
 		}).then(function(results) {
 			console.log("bussiness results: " + results)

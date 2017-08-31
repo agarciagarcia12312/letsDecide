@@ -1,9 +1,111 @@
+<br><br>
+
 <div class="main">
-	<div id="currentDeals" action="/business/current?_method=GET" 
-	method="GET" >
-		<h2>Current Deals</h2>
-	</div>
-	<div id="newDeal">
-		<h2>New Deal</h2>
-	</div>
-</div>
+
+<div class="row main-content">
+   
+     <div class="col-lg-3 sidebar">
+     		<h3>Add a New Deal!</h3>
+     		<br>
+			<form class="newDeal sidebar-div" action="/api/deals" method = "POST">
+				<!-- Deal Title --> 
+				<div class="form-group row has-danger">
+	       			<label for="dealTitle" class="col-sm-4 col-form-label">Deal Title</label>
+	       			<div class="col-sm-8 input-group">
+	            		<input type="text" class="form-control" id="dealTitle"  name="tittle" placeholder="Name of the deal" required>
+	                 </div>
+	      		</div>
+				<!-- Deal Description--> 
+				<div class="form-group row has-danger">
+	       			<label for="dealDescription" class="col-sm-4 col-form-label">Deal Description</label>
+	       			<div class="col-sm-8 input-group">
+	            		<textarea class="form-control" id="dealDescription" name="body" rows="5" required></textarea>
+	                </div>
+	      		</div>
+	      		<!-- Business Category  -->
+	      		<div class="form-group row has-danger">
+					<label for="businessCategory" class="col-sm-4 col-form-label">Category:</label>
+					<div class="col-sm-8 ">
+					 	<input type="radio" name="category" value="food">Food<br>
+					 	<input type="radio" name="category" value="fun">Entertainment<br>
+				 	</div>
+				 </div>
+
+	      		<div class="form-group row has-danger">
+					<label class="col-sm-4 col-form-label">Days Available:</label>
+					<div class="col-sm-8 ">
+						<input type="checkbox" name="daysAvailable" value="m">Monday<br>
+						<input type="checkbox" name="daysAvailable" value="t">Tuesday<br>
+						<input type="checkbox" name="daysAvailable" value="w">Wednesday<br>
+						<input type="checkbox" name="daysAvailable" value="th">Thursday<br>
+						<input type="checkbox" name="daysAvailable" value="f">Friday<br>
+						<input type="checkbox" name="daysAvailable" value="sat">Saturday<br>
+						<input type="checkbox" name="daysAvailable" value="sun">Sunday<br>
+					</div>
+				</div>
+
+				<!-- Deal Start Time --> 
+				<div class="form-group row has-danger">
+	       			<label for="startTime" class="col-sm-4 col-form-label">Start Time</label>
+	       			<div class="col-sm-8 input-group">
+	            		<input type="time" class="form-control" id="dealStart"  name="dealStart" required>
+	                 </div>
+	      		</div>
+
+	      		<!-- Deal End Time --> 
+				<div class="form-group row has-danger">
+	       			<label for="endTime" class="col-sm-4 col-form-label">End Time</label>
+	       			<div class="col-sm-8 input-group">
+	            		<input type="time" class="form-control" id="dealEnd"  name="dealEnd" required>
+	                 </div>
+	      		</div>
+					<input type="hidden" value="{{bId}}" name="BusinessId">
+				<br>
+				<div class="col-sm-8 col-offset-sm-4 input-group">
+					<button>Submit</button>
+				</div>	
+			</form>
+     </div> 
+
+
+<!-- this is the handlebars code - comment out the one with dummy data and uncomment this one out   -->
+
+     <div class="col-lg-9 food-deals">
+			<div class="row"> 
+
+       		{{#each deals.Deals}}  
+
+       			<div class="col-lg-6">
+		           		<div class="card-grid">
+			             		<div class="deal-card active front">
+			             		        <form action="/api/deals/:{{this.id}}?_method=PUT" method="POST">
+												<button type="button" class="close" aria-label="Close">
+										 	 		<span aria-hidden="true">&times;</span>
+												</button>
+										</form>
+							            <h6>{{this.tittle}}</h6>
+							            <p class="deal-details">{{this.body}}</p>
+							            <hr>
+							            
+							    </div>
+					            <div class="deal-card deal-back active back">
+					            <p class="deal-info"> Available {{this.dealStart}} - {{this.dealEnd}}</p>
+							            <p class="deal-info"> {{this.Business.businessName}}</p>
+						                <p class="deal-info"> {{this.Business.businessName}}</p>
+						                <p class="deal-info"> {{this.Business.streetAddress}}</p>
+						                <p class="deal-info"> {{this.Business.city}} {{this.Business.state}}</p>
+						                <p class="deal-info"> {{this.Business.phone}}</p>
+						                <a class="deal-link" href="{{this.Business.webLink}}" target='_blank'>Visit Website</a>
+			             		</div>
+		          		</div> 
+        		</div> 
+
+        	{{/each}} 
+    		</div>            
+    </div>  <!--end div col-lg-9 food deals  -->  
+
+ <!-- end of handlebars code to be uncommented when ready -->
+
+</div> <!--end div main content row  -->
+
+</div><!-- end div main  -->

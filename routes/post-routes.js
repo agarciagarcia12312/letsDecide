@@ -1,7 +1,8 @@
 var db = require("../models");
+var yelp = require("../APIs/yelpAPI.js");
 
-
-
+const obj = {price:"1,2"}
+yelp.apiCall(obj);
 module.exports = function(app) {
 	// route that add user
 	// cheks if username already exist-- needs work
@@ -17,8 +18,10 @@ module.exports = function(app) {
 		// 	console.log("find user:  " + results)
 		// });
 
-		db.Users.create(req.body).then(function(dbUsers) {
-			res.json(dbUsers);
+		db.Users.create(req.body).then(function(dbResults) {
+			var encodedID = (dbResults.id + 173) * 9;
+				res.redirect("/"+ encodedID);
+				// res.json(dbUsers);
 		});
 		
 	});
@@ -43,8 +46,9 @@ module.exports = function(app) {
 		})
 	});
 
+	// api post route that checks business sign in
 	app.post("/bSignIN", function(req, res) {
-		var passwordInput =req.body.password;
+		var passwordInput = req.body.password;
 		console.log("business sign in working");
 		db.Business.findOne({
 			where: {
@@ -54,7 +58,7 @@ module.exports = function(app) {
 			if (passwordInput === results.password) {
 				console.log("correct password");
 				var encodedID = (results.id + 173) * 9;
-				res.redirect("/business/"+ encodedID);
+				res.redirect("/business/index/"+ encodedID);
 			}
 
 		})
@@ -76,12 +80,16 @@ module.exports = function(app) {
 			res.json(dbPost)
 		});
 	});
+
+
 	// route that adds new bussines
 	// cheks if username already exist --needs work
 	app.post("/business", function(req, res) {
 		console.log("add bussines workin");
 		db.Business.create(req.body).then(function(dbBusiness) {
-			res.json(dbBusiness);
+			var encodedID = (dbBusiness.id + 173) * 9;
+			res.redirect("/business/index/"+ encodedID);
+			// res.json(dbBusiness);
 		});
 	})
 
@@ -122,7 +130,7 @@ module.exports = function(app) {
 		req.body.daysAvailable = req.body.daysAvailable.toString();
 		console.log("add cupon body: " + JSON.stringify(req.body));
 		db.Deals.create(req.body).then(function(dbDeals) {
-			res.json(dbDeals);
+			res.redirect("/business/main");
 		});
 	});
 
@@ -133,7 +141,8 @@ module.exports = function(app) {
 				id: req.params.cuponId
 			}
 		}).then(function(dbDeals) {
-			res.json(dbDeals)
+			res.redirect("/business/main")
+			// res.json(dbDeals)
 		})
 	});
 	// api call: gets all favorites for user

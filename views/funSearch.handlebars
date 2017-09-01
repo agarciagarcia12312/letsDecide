@@ -1,0 +1,162 @@
+<br><br>
+ <!-- Main Content -->
+    <div class="row main-content">
+      <!-- SIDEBAR -->
+      <div class="col-lg-3 sidebar">
+        <h3 class="search-btn" data-toggle="collapse" data-target="#favorites"> Your Favorites <span class="arrow">&#9660;</span> 
+          <div class="collapse sidebar-div" id="favorites">
+            <p>Log in to see your favorites.</p>
+          </div>
+        </h3>
+
+       <h3 class="search-btn" data-toggle="collapse" data-target="#search"> Search <span class="arrow">&#9660;</span>  
+
+        </h3>
+        <form class="sidebar-div collapse" id="search" action="/#" method = "POST">
+           <p>START YOUR SEARCH</p>
+            <!-- What they want to find -->
+            <div class="form-group">
+              <input type="text" name="location" class="form-control" id="search-find" aria-describedby="Find Something" placeholder="What to find?">
+            </div>
+            <!-- What they want to find -->
+            <div class="form-group">
+              <input type="text" name="terms" class="form-control" id="search-location" aria-describedby="Set a starting point" placeholder="Enter a location">
+            </div>
+
+          <!-- activity typeto search -->
+          <p>FUN STUFF</p>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="dj-music">
+                Music-DJ
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="live-music">
+                Music-Live
+              </label>
+            </div>
+                        <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="dj-music">
+                Bowling
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="live-music">
+                Karaoke
+              </label>
+            </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" value="escape room">
+                  Escape Room
+                </label>
+              </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="live-music">
+                Arcade
+              </label>
+            </div>
+          <!-- Price levels to search -->
+          <p>PRICE LEVELS</p>    
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" name="price" type="checkbox" id="inlineCheckbox1" value="RestaurantsPriceRange2.1"> $
+              </label>
+            </div>
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" name="price" type="checkbox" id="inlineCheckbox2" value="RestaurantsPriceRange2.2"> $$
+              </label>
+            </div>
+            <div class="form-check form-check-inline disabled">
+              <label class="form-check-label">
+                <input class="form-check-input" name="price" type="checkbox" id="inlineCheckbox3" value="RestaurantsPriceRange2.3" > $$$
+              </label>
+            </div>     
+            <div class="form-check form-check-inline disabled">
+              <label class="form-check-label">
+                <input class="form-check-input" name="price" type="checkbox" id="inlineCheckbox3" value="RestaurantsPriceRange2.4" > $$$$
+              </label>
+            </div>
+          <!-- Other options for search   -->
+          <p>FEATURES</p>    
+            <div class="form-check form-check-inline">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="ActiveDeal"> Offering a Deal
+              </label>
+            </div>        
+      <!-- button  -->
+            <div class="form-group">
+                 <button type="submit" class="btn btn-outline-primary col-sm-8 col-sm-offset-2" id="#">Search</button>
+            </div>         
+        </form> 
+      </div> 
+      
+      <!-- search results -->
+      
+        <div class="col-lg-9">
+         
+        
+      {{#each bInfo}}
+        <form>
+          <div class="row search-result align-items-center">
+           <!-- Image, info and location for each business -->
+           <!-- Business Image  -->
+           <div class="col-lg-2 result-image">
+             <img src='{{this.image_url}}' style="width:90%; height: 70px;">
+           </div>
+           <!-- info about busines -->
+           <div class="col-lg-6 result">
+             <div class="row">
+               <div class="col-lg 6 result-info">
+                 <h3>{{this.name}}</h3>
+               </div>
+               <div class="col-lg-6 result-info">
+                 <p><b>Rating:</b> {{this.rating}}      |      {{this.review_count}} reviews       |       {{this.price}}</p>
+               </div>
+             </div>
+             <div class="row">
+               <div class="col-lg-12  result-review">
+                 <p>"Bob's has the tastiest burgers I've ever eaten. Lots of interesting toppings and flavors. Unfortunately, the staff is rude and the restaurant is usually dirty. I'd recommend it for delivery." - Peter Griffin, 8/25/2017</p>
+               </div>
+             </div>
+           </div>
+           <!-- location information for business -->
+           <div class="col-lg-2 result-location">
+             <div class="row">
+               <div class="col-lg-12 location-street">
+                 <p>{{this.location.address1}}</p>
+               </div>
+             </div>
+             <div class="row">
+               <div class="col-lg-12  location-city">
+                 <p>{{this.location.city}}, {{this.location.state}}</p>
+
+               </div>
+             </div>
+             <div class="row">
+               <div class="col-lg-12  result-phone">
+                <p><b>{{this.display_phone}}</b></p>
+               </div>
+             </div>
+           </div>
+           <!-- location information for business -->
+           <div class="col-lg-2">
+             <div class="row">
+               <div class="col-lg-12 l">
+                 <button class="button btn-success" id="addFavorite"><h6>Add to Favorites</h6></button>
+               </div>
+             </div>
+           </div>
+         </div>
+        </form>
+       {{/each}} 
+       </div>
+   
+    </div> 
+

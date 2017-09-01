@@ -3,19 +3,17 @@
  
 const yelp = require('yelp-fusion');
 
-const apiCall = function(searchQuery){
-	const searchResults = [];
+const apiCall = function(searchQuery, callBack){
+	console.log(searchQuery);
+	
 	const clientId ="Bc_bnoDsBRpqiMnDgV5ZHg";
 	const clientSecret = "DyinsiGY2ZbAA2Y3GeGQfZP4nKh41hwtPvUUB0Y7c9IpMrrcJWs6bTNhQtWrfkGZ";
 
-	var searchRequest = searchQuery;
+	var searchResults = searchQuery;
 	// const searchRequest = {
- // /*	latitude = locationObject.lat,
-	// longitude = locationObject.lng,*/
- // 	location: "denver, co" + /*locationSearch*/ + "",
- // 	limit: 10,
- // 	categories: "active",
- // 	term: "" + /*findField*/ + "",
+ // 	// term:'Four Barrel Coffee',
+ // 	location: 'denver, co',
+ // 	limit: 2,
  // 	price: "1,2"
 	// };
 
@@ -24,13 +22,14 @@ const apiCall = function(searchQuery){
 
 		const client = yelp.client(response.jsonBody.access_token);
 
-		client.search(searchRequest).then(response => {
+		client.search(searchQuery).then(response => {
 			// for loop that console.logs the first 10 responces
 			// find another way of doing this ---- send back the whole responce instead
 			// it'll be better for giving back results
 			// for (var i=0; i < response.jsonBody.businesses.length; i++) {
 				console.log(response.jsonBody.businesses);
 		    	// const firstResult = response.jsonBody.businesses[0];
+		    	callBack(response.jsonBody.businesses);
 		    	// const prettyJson = JSON.stringify(firstResult, null, 5);
 		    	// console.log(prettyJson);
 		    	// searchResults.push({prettyJson})

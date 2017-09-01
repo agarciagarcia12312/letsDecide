@@ -1,6 +1,8 @@
 
 var db = require("../models");
 var express = require("express");
+var Yelp = require("../APIs/yelpAPI.js");
+
 
 // var path = require("path");
 // var app = express.Router();
@@ -13,6 +15,11 @@ var signedIn = false;
 var signedIn_Id;
 var businessSignedIn = false;
 var bsignedIn_Id;
+
+	// route to about page 
+	router.get("/about", function(req,res) {
+		res.render("about");
+	});
 	// express router for main user page
 	router.get("/:userId?", function(req, res) {
 		userID = req.params.userId;
@@ -152,15 +159,25 @@ var bsignedIn_Id;
 	router.get("/search/:category", function(req,res) {
 		console.log("searchworking");
 		var category = req.params.category;
-		if (signedIn) {
-			res.render("search", {layout:'loggedIn.handlebars'});
-		}
-		res.render("search")
-
-
-
-
-	})
+		var obj = {location: " denver, co"};
+		Yelp.apiCall(obj, function (data) {
+			console.log("yelp data: " + data)
+			if (signedIn) {
+				if (category=="food") {
+					res.render("search", {bInfo: data, layout:'loggedIn.handlebars'});
+				} else {
+					res.render("funSearch", {bInfo: data,layout:'loggedIn.handlebars'});
+				}
+			} else {
+				if (category == "food") {
+					res.render("search", {bInfo: data})
+				} else {
+					res.render("funSearch", {bInfo: data})
+				}		
+			}
+		});
+		// console.log(JSON.stringify(Yelp.apiCall(obj)))
+	});
 
 	// express route for user favorites
 	router.get("/favorites/:userId", function(req, res) {

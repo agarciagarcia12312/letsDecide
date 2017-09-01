@@ -1,4 +1,4 @@
- <br><br>
+<br<br><br>
  <!-- Main Content -->
     <div class="row main-content">
       <!-- SIDEBAR -->
@@ -49,12 +49,12 @@
                 Karaoke
               </label>
             </div>
-                        <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="dj-music">
-                Escape Room
-              </label>
-            </div>
+              <div class="form-check">
+                <label class="form-check-label">
+                  <input class="form-check-input" type="checkbox" value="escape room">
+                  Escape Room
+                </label>
+              </div>
             <div class="form-check">
               <label class="form-check-label">
                 <input class="form-check-input" type="checkbox" value="live-music">
@@ -95,6 +95,68 @@
                  <button type="submit" class="btn btn-outline-primary col-sm-8 col-sm-offset-2" id="#">Search</button>
             </div>         
         </form> 
-
       </div> 
+      
+      <!-- search results -->
+      
+        <div class="col-lg-9">
+         
+        
+      {{#each bInfo}}
+        <form>
+          <div class="row search-result align-items-center">
+           <!-- Image, info and location for each business -->
+           <!-- Business Image  -->
+           <div class="col-lg-2 result-image">
+             <img src='{{this.image_url}}' style="width:90%; height: 70px;">
+           </div>
+           <!-- info about busines -->
+           <div class="col-lg-6 result">
+             <div class="row">
+               <div class="col-lg 6 result-info">
+                 <h3>{{this.name}}</h3>
+               </div>
+               <div class="col-lg-6 result-info">
+                 <p><b>Rating:</b> {{this.rating}}      |      {{this.review_count}} reviews       |       {{this.price}}</p>
+               </div>
+             </div>
+             <div class="row">
+               <div class="col-lg-12  result-review">
+                 <p>"Bob's has the tastiest burgers I've ever eaten. Lots of interesting toppings and flavors. Unfortunately, the staff is rude and the restaurant is usually dirty. I'd recommend it for delivery." - Peter Griffin, 8/25/2017</p>
+               </div>
+             </div>
+           </div>
+           <!-- location information for business -->
+           <div class="col-lg-2 result-location">
+             <div class="row">
+               <div class="col-lg-12 location-street">
+                 <p>{{this.location.address1}}</p>
+               </div>
+             </div>
+             <div class="row">
+               <div class="col-lg-12  location-city">
+                 <p>{{this.location.city}}, {{this.location.state}}</p>
+
+               </div>
+             </div>
+             <div class="row">
+               <div class="col-lg-12  result-phone">
+                <p><b>{{this.display_phone}}</b></p>
+               </div>
+             </div>
+           </div>
+           <!-- location information for business -->
+           <div class="col-lg-2">
+             <div class="row">
+               <div class="col-lg-12 l">
+                 <button class="button btn-success" id="addFavorite"><h6>Add to Favorites</h6></button>
+               </div>
+             </div>
+           </div>
+         </div>
+        </form>
+       {{/each}} 
+       </div>
+   
     </div> 
+

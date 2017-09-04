@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": "",
-    "database": "letsDecide_db",
-    "host": "localhost",
+    "password": "rootroot",
+    "database": "letdeciders",
+    "host": "ducodingbootcamp1project2.c8q4eqibbjyw.us-west-2.rds.amazonaws.com",
     "dialect": "mysql"
   },
   "test": {

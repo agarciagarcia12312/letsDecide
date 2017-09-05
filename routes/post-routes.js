@@ -1,8 +1,8 @@
 var db = require("../models");
 var yelp = require("../APIs/yelpAPI.js");
 
-const obj = {price:"1,2"}
-yelp.apiCall(obj);
+// const obj = {price:"1,2"}
+// yelp.apiCall(obj);
 module.exports = function(app) {
 	// route that add user
 	// cheks if username already exist-- needs work
@@ -19,32 +19,33 @@ module.exports = function(app) {
 		// });
 
 		db.Users.create(req.body).then(function(dbResults) {
-			var encodedID = (dbResults.id + 173) * 9;
-				res.redirect("/"+ encodedID);
+			// var encodedID = (dbResults.id + 173) * 9;
+				res.redirect("/");
 				// res.json(dbUsers);
 		});
 		
 	});
 
-	//  user sign in authenthication and redirect
-	app.post("/signIn", function(req,res) {
-		var passwordInput = req.body.password;
-		console.log("sign in post work");
-		console.log("sign in Request: " + JSON.stringify(req.body) );
-		db.Users.findOne({
-			where: {
-				email: req.body.email
-			}
-		}).then(function(results) {
-			console.log("search results" + JSON.stringify(results))
-			if (passwordInput === results.password) {
-				console.log("correct password");
-				var encodedID = (results.id + 173) * 9;
-				res.redirect("/"+ encodedID);
-			}
+	// //  user sign in authenthication and redirect
+	// app.post("/signIn", function(req,res) {
+	// 	var passwordInput = req.body.password;
+	// 	console.log("sign in post work");
+	// 	console.log("sign in Request: " + JSON.stringify(req.body) );
+	// 	db.Users.findOne({
+	// 		where: {
+	// 			email: req.body.email
+	// 		}
+	// 	}).then(function(results) {
+	// 		console.log("search results" + JSON.stringify(results))
+	// 		if (passwordInput === results.password) {
+	// 			console.log("correct password");
+	// 			var encodedID = (results.id + 173) * 9;
+	// 			res.json()
+	// 			// res.redirect("/"+ encodedID);
+	// 		}
 
-		})
-	});
+	// 	})
+	// });
 
 	// api post route that checks business sign in
 	app.post("/bSignIN", function(req, res) {

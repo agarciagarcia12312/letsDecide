@@ -5,8 +5,12 @@
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.17.2",
+    "client-sessions": "^0.8.0",
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.4",
+    "express-flash": "git://github.com/RGBboy/express-flash.git",
     "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.5",
     "fs": "^0.0.1-security",
     "method-override": "^2.3.9",
     "mysql2": "^1.4.1",

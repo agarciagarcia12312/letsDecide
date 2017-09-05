@@ -19,3 +19,9 @@ for (i=0; i <15; i++) {
 }
 
 $('.search-btn').on('click', toggleMenuArrow);
+
+
+// ============= user authentication cookie ========================
+// $.cookie("userSession", 1);
+
+

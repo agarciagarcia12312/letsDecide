@@ -1,14 +1,115 @@
-
 var db = require("../models");
 var express = require("express");
+var router = express.Router();
 var Yelp = require("../APIs/yelpAPI.js");
+// passport setup
+var passport = require('passport')
+ , LocalStrategy = require('passport-local').Strategy;
+
+passport.serializeUser(function(user, done) {
+	console.log("serializeUser working")
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+	console.log("id: " + id)
+  db.Users.findOne({where: {id:id}}). then(function(user) {
+  	console.log("found it")
+    done(null, user);
+  });
+});
+
+passport.use('local-signup', new LocalStrategy({
+    passReqToCallback : true
+  },
+  function(req, email, password, done) {
+    findOrCreateUser = function(){
+      // find a user in Mongo with provided username
+      db.User.findOne({email:email}, function(err, user) {
+        // In case of any error return
+        if (err){
+          console.log('Error in SignUp: '+err);
+          return done(err);
+        }
+        // already exists
+        else if (user) {
+          console.log('User already exists');
+          return done(null, false, 
+             req.flash('message','User Already Exists'));
+        } else {
+	          // if there is no user with that email
+	          // create the user
+	          var newUser = new User();
+	          // set the user's local credentials
+	          
+	          newUser.password = password;
+	          newUser.email = email;
+	          newUser.userName = req.param('userName');
+	      
+ 
+         	 // save the user
+         	db.Users.create(newUser).then(function(err) {
+            	if (err){
+            	  console.log('Error in Saving user: '+err);  
+            	  throw err;  
+            	}
+            	console.log('User Registration succesful');   
+            	res.redirect("/"); 
+            	return done(null, newUser.get());
+          	});
+        }
+      })
+    }
+     
+    // Delay the execution of findOrCreateUser and execute 
+    // the method in the next tick of the event loop
+    // process.nextTick(findOrCreateUser);
+  })
+);
 
 
-// var path = require("path");
-// var app = express.Router();
+// / passport/login.js
+passport.use('login', new LocalStrategy({
+	usernameField: "email",
+    passReqToCallback : true
+  },
+  function(req, username, password, done) { 
+  	console.log("login Strategy working ");
+  	console.log(username);
+  	console.log(password);
+    // check in mongo if a user with username exists or not
+    db.Users.findOne({where: {
+    	'email': username}
+    }). 
+      then(function(user) {
+      	console.log("sign in worked");
+      	console.log("user:  " + JSON.stringify(user))
+        // In case of any error, return using the done method
+        // Username does not exist, log error & redirect back
+        if (!user){
+          console.log('User Not Found with email '+username);
+          return done(null, false, 
+                req.flash('message', 'User Not found.'));                 
+        }
+        // User exists but wrong password, log the error 
+        if (password != user.password){
+          console.log('Invalid Password');
+          return done(null, false, 
+              req.flash('message', 'Invalid Password'));
+        }
+        
+        // console.log(JSON.stringify(user))
+        // User and password both match, return user from 
+        // done method which will be treated like success
+        return done(null, user.get());
+      }
+    );
+}));
 
 
-// module.exports  = function(app) {
+// ===================== end passport setu up ====================================
+
+
 var router = express.Router();
 // ==========customer/user routes==============
 var signedIn = false;
@@ -20,33 +121,36 @@ var bsignedIn_Id;
 	router.get("/about", function(req,res) {
 		res.render("about");
 	});
-	// express router for main user page
-	router.get("/:userId?", function(req, res) {
-		userID = req.params.userId;
-		var DecodedId = (req.params.userId /9) -173;
-		var userId = DecodedId;
-		console.log(DecodedId);
-		if (DecodedId>0) {
-			signedIn= true;
-			signedIn_Id = DecodedId;
-		}
+
+	// rdign up route
+	router.post('/user', passport.authenticate('local-signup', {
+		successRedirect: '/',
+    	failureRedirect: '/user/new',
+    	failureFlash : true 
+	}));
+	// route for singning in
+	 router.post('/signIn', passport.authenticate('login', {
+    	successRedirect: '/',
+    	failureRedirect: '/about',
+    	failureFlash : true 
+  	}));
+	// router.post("/signIn", 
 	
-		if (signedIn) {
-			db.Users.findOne({
-			where: {
-				id: signedIn_Id
-			}
-		}).then(function(results) {
-			userName = results.userName;
-			console.log("name: " + results.userName);
-			console.log("individual working");
-			res.render("index", {layout: 'loggedIn.handlebars', userName: userName} );
-		})
-		} else {
-			console.log("main page working");
-			res.render("index");
-		}	
+	// eoute for signing out 
+	router.get('/logout', function(req, res) {
+	  req.session.reset();
+	  res.redirect('/');
 	});
+
+	// express router for main user page
+	router.get('/', function(req, res) {
+		if (req.user) {
+			res.render("index", {layout: 'loggedIn.handlebars', userName: req.user.userName} );
+		} else {
+			res.render("index");
+		}
+	})
+	
 
 	// express router for deals page
 	router.get("/deals/:category/", function(req, res) {
@@ -121,7 +225,7 @@ var bsignedIn_Id;
 
 			
 			// res.render("deals", returnObject)
-			if (signedIn) {
+			if (req.user) {
 				var DecodedId = (userId /9) -173;
 
 				db.Users.findOne({
@@ -134,9 +238,9 @@ var bsignedIn_Id;
 					console.log("return object with users:   " + JSON.stringify(returnObject))
 					// needs work not working properly
 					if(category== "food") {
-						res.render("deals", {deals: returnObject.deals, layout: 'loggedIn.handlebars' });
+						res.render("deals", {deals: returnObject.deals, userName: req.user.userName, layout: 'loggedIn.handlebars' });
 					} else {
-						res.render("funDeals", {deals: returnObject.deals, layout: 'loggedIn.handlebars' });
+						res.render("funDeals", {deals: returnObject.deals, userName: req.user.userName, layout: 'loggedIn.handlebars' });
 					}
 				})
 			
@@ -164,9 +268,9 @@ var bsignedIn_Id;
 			console.log("yelp data: " + data)
 			if (signedIn) {
 				if (category=="food") {
-					res.render("search", {bInfo: data, layout:'loggedIn.handlebars'});
+					res.render("search", {bInfo: data, userName: req.user.userName, layout:'loggedIn.handlebars'});
 				} else {
-					res.render("funSearch", {bInfo: data,layout:'loggedIn.handlebars'});
+					res.render("funSearch", {bInfo: data, userName: req.user.userName, layout:'loggedIn.handlebars'});
 				}
 			} else {
 				if (category == "food") {

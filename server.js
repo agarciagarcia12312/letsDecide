@@ -1,16 +1,19 @@
 var express = require("express");
+var flash = require('express-flash');
 var bodyParser = require("body-parser");
 var override = require("method-override");
 var bodyParser = require("body-parser");
 var mrHandle = require("express-handlebars");
-var routes = require("./controller/decide.js")
-
+var routes = require("./controller/decide.js");
+var passport = require('passport');
+var cookieParser = require('cookie-parser')
+var session = require('express-session')
 
 
 // Sets up the Express App
 // =============================================================
 var app = express();
-var PORT = process.env.PORT || 3306;
+var PORT = process.env.PORT || 8080;
 
 // Requiring our models for syncing
 var db = require("./models");
@@ -23,6 +26,13 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
 // Static directory
 app.use(express.static("public"));
+app.use(cookieParser());
+
+app.use(session({ secret: 'its a secret',resave: true, saveUninitialized:true})); // session secret
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+
 
 // Routes
 // =============================================================

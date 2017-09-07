@@ -1,8 +1,38 @@
 module.exports = function(sequelize, DataTypes) {
 	var Favorites = sequelize.define("Favorites", {
-		// deal tittle string
-		
-		
+		// favorites
+		imageLink: {
+			type: DataTypes.STRING,
+			allowNul:false
+		},
+		name:  {
+			type: DataTypes.STRING,
+    	 	allowNull: false,
+		},
+		rating: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		price: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		street: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		city: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		state: {
+			type: DataTypes.STRING,
+			allowNull: false
+		},
+		phoneNumber: {
+			type: DataTypes.STRING,
+			allowNull: false
+		}	
 	});
 	 Favorites.associate = function(models) {
 	 	// Associating Business with deals

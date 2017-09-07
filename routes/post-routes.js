@@ -8,15 +8,6 @@ module.exports = function(app) {
 	// cheks if username already exist-- needs work
 	app.post("/user", function(req, res) {
 		console.log("add user workin");
-		// var userName = req.body.userName;
-		// db.Users.findAll({
-		// 	where: {
-		// 		username: userName
-		// 	}
-		// }).then(function(dbUsers) {
-		// 	var results = res.json(dbUsers);
-		// 	console.log("find user:  " + results)
-		// });
 
 		db.Users.create(req.body).then(function(dbResults) {
 			// var encodedID = (dbResults.id + 173) * 9;
@@ -48,22 +39,22 @@ module.exports = function(app) {
 	// });
 
 	// api post route that checks business sign in
-	app.post("/bSignIN", function(req, res) {
-		var passwordInput = req.body.password;
-		console.log("business sign in working");
-		db.Business.findOne({
-			where: {
-				email: req.body.email
-			}
-		}).then(function(results) {
-			if (passwordInput === results.password) {
-				console.log("correct password");
-				var encodedID = (results.id + 173) * 9;
-				res.redirect("/business/index/"+ encodedID);
-			}
+	// app.post("/bSignIN", function(req, res) {
+	// 	var passwordInput = req.body.password;
+	// 	console.log("business sign in working");
+	// 	db.Business.findOne({
+	// 		where: {
+	// 			email: req.body.email
+	// 		}
+	// 	}).then(function(results) {
+	// 		if (passwordInput === results.password) {
+	// 			console.log("correct password");
+	// 			var encodedID = (results.id + 173) * 9;
+	// 			res.redirect("/business/index/"+ encodedID);
+	// 		}
 
-		})
-	})
+	// 	})
+	// })
 
 
 
@@ -89,7 +80,7 @@ module.exports = function(app) {
 		console.log("add bussines workin");
 		db.Business.create(req.body).then(function(dbBusiness) {
 			var encodedID = (dbBusiness.id + 173) * 9;
-			res.redirect("/business/index/"+ encodedID);
+			res.redirect("/business/main");
 			// res.json(dbBusiness);
 		});
 	})
@@ -158,8 +149,9 @@ module.exports = function(app) {
 	});
 	// api call: adds to favorite list
 	app.post("/api/favorites", function(req, res) {
+		console.log("add favorites route working")
 		db.Favorites.create(req.body).then(function(dbFavorites) {
-			res.json(dbFavorites);
+			res.redirect("back");
 		});
 	});
 	// api call:deletes from favorite list

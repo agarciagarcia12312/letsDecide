@@ -34,13 +34,13 @@
 	      		<div class="form-group row has-danger">
 					<label class="col-sm-4 col-form-label">Days Available:</label>
 					<div class="col-sm-8 ">
-						<input type="checkbox" name="daysAvailable" value="m">Monday<br>
-						<input type="checkbox" name="daysAvailable" value="t">Tuesday<br>
-						<input type="checkbox" name="daysAvailable" value="w">Wednesday<br>
-						<input type="checkbox" name="daysAvailable" value="th">Thursday<br>
-						<input type="checkbox" name="daysAvailable" value="f">Friday<br>
-						<input type="checkbox" name="daysAvailable" value="sat">Saturday<br>
-						<input type="checkbox" name="daysAvailable" value="sun">Sunday<br>
+						<input type="checkbox" name="daysAvailable" value="1">Monday<br>
+						<input type="checkbox" name="daysAvailable" value="2">Tuesday<br>
+						<input type="checkbox" name="daysAvailable" value="3">Wednesday<br>
+						<input type="checkbox" name="daysAvailable" value="4">Thursday<br>
+						<input type="checkbox" name="daysAvailable" value="5">Friday<br>
+						<input type="checkbox" name="daysAvailable" value="6">Saturday<br>
+						<input type="checkbox" name="daysAvailable" value="7">Sunday<br>
 					</div>
 				</div>
 
@@ -78,8 +78,8 @@
        			<div class="col-lg-6">
 		           		<div class="card-grid">
 			             		<div class="deal-card active front">
-			             		        <form action="/api/deals/:{{this.id}}?_method=PUT" method="POST">
-												<button type="button" class="close" aria-label="Close">
+			             		        <form action="/api/deals/{{this.id}}?_method=DELETE" method="post">
+												<button type="Submit" class="close" aria-label="Close">
 										 	 		<span aria-hidden="true">&times;</span>
 												</button>
 										</form>

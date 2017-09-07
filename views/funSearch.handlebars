@@ -103,20 +103,24 @@
          
         
       {{#each bInfo}}
-        <form>
+        <form action="/api/favorites" method="post">
           <div class="row search-result align-items-center">
            <!-- Image, info and location for each business -->
            <!-- Business Image  -->
            <div class="col-lg-2 result-image">
+            <input type="hidden" name="imageLink" value="{{this.image_url}}">
              <img src='{{this.image_url}}' style="width:90%; height: 70px;">
            </div>
            <!-- info about busines -->
            <div class="col-lg-6 result">
              <div class="row">
                <div class="col-lg 6 result-info">
+               <input type="hidden" name="name" value="{{this.name}}">
                  <h3>{{this.name}}</h3>
                </div>
                <div class="col-lg-6 result-info">
+               <input type="hidden" name="rating" value="{{this.rating}}">
+               <input type="hidden" name="price" value=" {{this.price}}">
                  <p><b>Rating:</b> {{this.rating}}      |      {{this.review_count}} reviews       |       {{this.price}}</p>
                </div>
              </div>
@@ -129,23 +133,28 @@
            <!-- location information for business -->
            <div class="col-lg-2 result-location">
              <div class="row">
+             <input type="hidden" name="street" value="{{this.location.address1}}">
                <div class="col-lg-12 location-street">
                  <p>{{this.location.address1}}</p>
                </div>
              </div>
              <div class="row">
                <div class="col-lg-12  location-city">
+               <input type="hidden" name="city" value="{{this.location.city}}">
+               <input type="hidden" name="state" value="{{this.location.state}}">
                  <p>{{this.location.city}}, {{this.location.state}}</p>
 
                </div>
              </div>
              <div class="row">
                <div class="col-lg-12  result-phone">
+               <input type="hidden" name="phoneNumber" value="{{this.display_phone}}">
                 <p><b>{{this.display_phone}}</b></p>
                </div>
              </div>
            </div>
            <!-- location information for business -->
+            <input type="hidden" name="UserId" value="{{this.uId}}" >
            <div class="col-lg-2">
              <div class="row">
                <div class="col-lg-12 l">

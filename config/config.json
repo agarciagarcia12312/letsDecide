@@ -17,7 +17,7 @@
     "username": "local",
     "password": "123456789",
     "database": "letsDecide_db",
-    "host": "andycodes.cebzjslr4lym.us-west-1.rds.amazonaws.com:3306",
+    "host": "andycodes.cebzjslr4lym.us-west-1.rds.amazonaws.com",
     "dialect": "mysql"
   }
 }

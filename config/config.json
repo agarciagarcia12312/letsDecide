@@ -15,9 +15,9 @@
   },
   "production": {
     "username": "local",
-    "password": "",
+    "password": "123456789",
     "database": "letsDecide_db",
-    "host": "andycodes.cebzjslr4lym.us-west-1.rds.amazonaws.com",
+    "host": " andycodes.cebzjslr4lym.us-west-1.rds.amazonaws.com:3306",
     "dialect": "mysql"
   }
 }

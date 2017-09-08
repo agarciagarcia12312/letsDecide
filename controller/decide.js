@@ -360,6 +360,7 @@ var router = express.Router();
 				// object for loop that adds user id info 
 				for (key in data) {
 					data[key].uId = req.user.id;
+					data[key].category = category;
 				}
 				if (category=="food") {
 					res.render("search", {bInfo: data, userName: req.user.userName, layout:'loggedIn.handlebars'});

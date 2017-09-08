@@ -2,6 +2,8 @@ var db = require("../models");
 var express = require("express");
 var router = express.Router();
 var Yelp = require("../APIs/yelpAPI.js");
+// moment js for cheking time
+var moment = require('moment-timezone');
 // passport setup
 var passport = require('passport')
  , LocalStrategy = require('passport-local').Strategy;
@@ -261,10 +263,10 @@ var router = express.Router();
 			// time check function that checks the results to see if they're active
 			function timeCheck(dealStart, dealEnd, daysActive) {
 				// var gets current day and time info
-				var currentTime = new Date();
-				var hour = parseInt(currentTime.getHours());
-				var minute = parseInt(currentTime.getMinutes());
-				var day = currentTime.getDay().toString();
+				var currentTime = moment().tz("America/Denver");
+				var hour = parseInt(currentTime.hour());
+				var minute = parseInt(currentTime.minute());
+				var day = currentTime.day().toString();
 				// if statement that fixes time so that it can be read properly
 				if (minute<10) {
 					minute= "0" + String(minute)

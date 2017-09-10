@@ -326,3 +326,43 @@ footer {
     height: 60px;
     padding: 7px;
 }
+
+/*===============================================================================
+styling the favorites results
+===============================================================================
+*/
+#favorites {
+    width: 90%;
+    position: relative;
+    right: 15%;
+}
+#favoriteForm {
+    position: static;
+    margin-left: 5%;
+    border:1px solid green;
+    width: 100%;
+    padding: 5px;
+    margin-top: 15px;
+    border-radius: 10px;
+}
+#favName {
+    font-size: 1.5em;
+}
+#favDetails p {
+    text-align: left;
+    font-size: .4em;
+    margin: 0px 0px 5% 0px;
+    font-weight: normal;
+} 
+#favPic {
+    float: left;
+    margin-top: 5%;
+    margin-left: 5%;
+    width: 100px;
+    height: 75px;
+}
+#favDetails {
+    margin-top: 5%;
+    margin-right: 5%;
+    float: right;
+}

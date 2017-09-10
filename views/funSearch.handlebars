@@ -4,10 +4,38 @@
       <!-- SIDEBAR -->
       <div class="col-lg-3 sidebar">
         <h3 class="search-btn" data-toggle="collapse" data-target="#favorites"> Your Favorites <span class="arrow">&#9660;</span> 
-          <div class="collapse sidebar-div" id="favorites">
-            <p>Log in to see your favorites.</p>
-          </div>
         </h3>
+          <div class="collapse sidebar-div" id="favorites">
+           {{#unless favorites}}
+              <p style="text-align: center;">Log in to see your favorites.</p>
+             {{/unless}} 
+
+
+             {{#each favorites}}
+              <form action="/api/favorites/{{this.id}}?_method=DELETE" method="POST" id="favoriteForm">
+               
+                <input type="hidden" name="id" value="{{this.id}}">
+                <h3 id="favName">{{this.name}}
+                  <button type="Submit" class="close" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                </h3>
+                <img src="{{this.imageLink}}" id ="favPic">
+                <div id="favDetails">
+                  <h3>
+                    <p><b>Rating:</b> {{this.rating}} |  {{this.price}}</p>
+                    <p>{{this.street}}<br>
+                     {{this.city}}, {{this.state}}</p>
+                    <p><b> {{this.phoneNumber}} </b></p>
+                  </h3>  
+                 </div> 
+                 <br style= "clear: both;">
+              
+              </form>      
+            {{/each}}
+
+          </div>
+  
 
        <h3 class="search-btn" data-toggle="collapse" data-target="#search"> Search <span class="arrow">&#9660;</span>  
 
@@ -155,6 +183,7 @@
            </div>
            <!-- location information for business -->
             <input type="hidden" name="UserId" value="{{this.uId}}" >
+            <input type="hidden" name="category" value="{{this.category}}">
            <div class="col-lg-2">
              <div class="row">
                <div class="col-lg-12 l">

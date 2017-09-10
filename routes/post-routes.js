@@ -161,7 +161,7 @@ module.exports = function(app) {
 				id: req.params.favId
 			}
 		}).then(function(dbFavorites) {
-			res.json(dbFavorites)
+			res.redirect("back");
 		})
 	});
 

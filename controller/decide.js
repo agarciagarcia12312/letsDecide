@@ -359,16 +359,31 @@ var router = express.Router();
 			console.log("yelp data: " + data)
 			// if looged in 
 			if (req.user) {
-				// object for loop that adds user id info 
+				// searches database for user favorites
+				db.Users.findOne({
+					where: {
+						id: req.user.id
+					}, include: [{model: db.Favorites, where: {
+						category: category
+					}}]
+				}).then(function(results) {
+					console.log("favorites results: " + JSON.stringify(results));
+					if (results != null) {
+						var favorites = results.Favorites;
+					}
+
+					// object for loop that adds user id info 
 				for (key in data) {
 					data[key].uId = req.user.id;
 					data[key].category = category;
 				}
+
 				if (category=="food") {
-					res.render("search", {bInfo: data, userName: req.user.userName, layout:'loggedIn.handlebars'});
+					res.render("search", {bInfo: data, favorites: favorites, userName: req.user.userName, layout:'loggedIn.handlebars'});
 				} else {
-					res.render("funSearch", {bInfo: data, userName: req.user.userName, layout:'loggedIn.handlebars'});
+					res.render("funSearch", {bInfo: data, favorites: favorites, userName: req.user.userName, layout:'loggedIn.handlebars'});
 				}
+				})
 			} 
 			// if not logged in
 			 else {

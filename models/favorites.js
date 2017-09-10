@@ -32,6 +32,10 @@ module.exports = function(sequelize, DataTypes) {
 		phoneNumber: {
 			type: DataTypes.STRING,
 			allowNull: false
+		},
+		category: {
+			type: DataTypes.STRING,
+			allowNull: false
 		}	
 	});
 	 Favorites.associate = function(models) {

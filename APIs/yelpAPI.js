@@ -27,7 +27,7 @@ const apiCall = function(searchQuery, callBack){
 			// find another way of doing this ---- send back the whole responce instead
 			// it'll be better for giving back results
 			// for (var i=0; i < response.jsonBody.businesses.length; i++) {
-				console.log(response.jsonBody.businesses);
+				// console.log(response.jsonBody.businesses);
 		    	// const firstResult = response.jsonBody.businesses[0];
 		    	callBack(response.jsonBody.businesses);
 		    	// const prettyJson = JSON.stringify(firstResult, null, 5);

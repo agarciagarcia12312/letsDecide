@@ -39,82 +39,88 @@
        <h3 class="search-btn" data-toggle="collapse" data-target="#search"> Search <span class="arrow">&#9660;</span>  
 
         </h3>
-        <form class="sidebar-div collapse" id="search" action="/#" method = "POST">
+        <form class="sidebar-div collapse" id="search" action="/search/food" method = "get">
            <p>START YOUR SEARCH</p>
             <!-- What they want to find -->
             <div class="form-group">
-              <input type="text" name="location" class="form-control" id="search-find" aria-describedby="Find Something" placeholder="What to find?">
+              <input type="text" name="term" class="form-control" id="search-find" aria-describedby="Find Something" placeholder="tacos, pizza, burgers... etc">
             </div>
             <!-- What they want to find -->
             <div class="form-group">
-              <input type="text" name="terms" class="form-control" id="search-location" aria-describedby="Set a starting point" placeholder="Enter a location">
+              <input type="text" name="location" class="form-control" id="search-location" aria-describedby="Set a starting point" placeholder="Enter a location" > 
             </div>
 
           <!-- activity typeto search -->
-          <p>FUN STUFF</p>
+          <p>Category</p>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="dj-music">
-                Music-DJ
+                <input class="form-check-input" type="checkbox" name="categories" value="breweries">
+                Brewerie
               </label>
             </div>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="live-music">
-                Music-Live
-              </label>
-            </div>
-                        <div class="form-check">
-              <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="dj-music">
-                Bowling
+                <input class="form-check-input" type="checkbox" name="categories" value="juicebars">
+                Juice Bar
               </label>
             </div>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="live-music">
-                Karaoke
+                <input class="form-check-input" type="checkbox" name="categories" value="coffee">
+                Cofee
               </label>
             </div>
               <div class="form-check">
                 <label class="form-check-label">
-                  <input class="form-check-input" type="checkbox" value="escape room">
-                  Escape Room
+                  <input class="form-check-input" type="checkbox" name="categories" value="bakeries">
+                  Bakery
                 </label>
               </div>
             <div class="form-check">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" value="live-music">
-                Arcade
+                <input class="form-check-input" type="checkbox" name="categories" value="desserts">
+                Desserts
+              </label>
+            </div>
+             <div class="form-check">
+              <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" name="categories" value="streetvendors">
+               Street Vendors
               </label>
             </div>
           <!-- Price levels to search -->
           <p>PRICE LEVELS</p>    
             <div class="form-check form-check-inline">
               <label class="form-check-label">
-                <input class="form-check-input" name="price" type="checkbox" id="inlineCheckbox1" value="RestaurantsPriceRange2.1"> $
+                <input class="form-check-input" name="price" type="checkbox" id="inlineCheckbox1" value="1"> $
               </label>
             </div>
             <div class="form-check form-check-inline">
               <label class="form-check-label">
-                <input class="form-check-input" name="price" type="checkbox" id="inlineCheckbox2" value="RestaurantsPriceRange2.2"> $$
+                <input class="form-check-input" name="price" type="checkbox" id="inlineCheckbox2" value="2"> $$
               </label>
             </div>
             <div class="form-check form-check-inline disabled">
               <label class="form-check-label">
-                <input class="form-check-input" name="price" type="checkbox" id="inlineCheckbox3" value="RestaurantsPriceRange2.3" > $$$
+                <input class="form-check-input" name="price" type="checkbox" id="inlineCheckbox3" value="3" > $$$
               </label>
             </div>     
             <div class="form-check form-check-inline disabled">
               <label class="form-check-label">
-                <input class="form-check-input" name="price" type="checkbox" id="inlineCheckbox3" value="RestaurantsPriceRange2.4" > $$$$
+                <input class="form-check-input" name="price" type="checkbox" id="inlineCheckbox3" value="4" > $$$$
               </label>
             </div>
           <!-- Other options for search   -->
-          <p>FEATURES</p>    
+          <p>Results</p>    
             <div class="form-check form-check-inline">
               <label class="form-check-label">
-                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="ActiveDeal"> Offering a Deal
+                <input class="form-check-input" type="radio" id="inlineCheckbox1" name="limit" value="10"> 10
+              </label>
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" id="inlineCheckbox1" name="limit" value="25"> 25
+              </label>
+              <label class="form-check-label">
+                <input class="form-check-input" type="radio" id="inlineCheckbox1" name="limit" value="50"> 50
               </label>
             </div>        
       <!-- button  -->

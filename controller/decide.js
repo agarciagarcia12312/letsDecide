@@ -314,21 +314,33 @@ var router = express.Router();
 			
 			// if user is signed in
 			if (req.user) {
-				var DecodedId = (userId /9) -173;
+			
+
+
+
 				// cjeks databse for user info
 				db.Users.findOne({
 					where: {
-						email: req.user.email
-					}
+						id: req.user.id
+					}, include: [{model: db.Favorites, where: {
+						category: category
+					}}]
 				}).then(function(results) {
+					console.log("search results: " + JSON.stringify(results))
+					if (results) {
+						favorites = results.Favorites;
+					} else {
+						var favorites = {};
+					}
+
 					returnObject.userInfo = results;
 					// console.log("active---:  " + returnObject.deals[0].active);
 					console.log("return object with users:   " + JSON.stringify(returnObject))
 					// needs work not working properly
 					if(category== "food") {
-						res.render("deals", {deals: returnObject.deals, userName: req.user.userName, layout: 'loggedIn.handlebars' });
+						res.render("deals", {deals: returnObject.deals, favorites: favorites, userName: req.user.userName, layout: 'loggedIn.handlebars' });
 					} else {
-						res.render("funDeals", {deals: returnObject.deals, userName: req.user.userName, layout: 'loggedIn.handlebars' });
+						res.render("funDeals", {deals: returnObject.deals, favorites: favorites, userName: req.user.userName, layout: 'loggedIn.handlebars' });
 					}
 				})
 			
@@ -351,12 +363,38 @@ var router = express.Router();
 
 	// express route for search
 	router.get("/search/:category", function(req,res) {
+		// if (req.query.term != "undefined") {
+		// 	console.log(req.query.term);
+		// }
+		// if (req.query.location != "undefined") {
+		// 	console.log(req.query.location);
+		// }
+		var query = {location: " Denver, co"};
+		if (req.params.category === "fun") {
+			query.categories = "active";
+		} else {
+			query.categories = "food";
+		}
+		for (key in req.query) {
+			if (req.query[key] ) {
+				console.log([key]);
+				console.log(req.query[key])
+				console.log("if present: " + req.query[key]);
+				query[key] = req.query[key].toString();
+			}	
+		}
+		console.log(JSON.stringify(query))
+		
+		// console.log(req.query.location);
+		// console.log(req.query.category);
+		// console.log(req.query.price);
+		// console.log(req.query.limit);
 		// console.log("searchworking");
 		// cheks to see which category of deals to show
 		var category = req.params.category;
-		var obj = {location: " denver, co"};
-		Yelp.apiCall(obj, function (data) {
-			console.log("yelp data: " + data)
+		// var obj = {location: " denver, co"};
+		Yelp.apiCall(query, function (data) {
+			// console.log("yelp data: " + data)
 			// if looged in 
 			if (req.user) {
 				// searches database for user favorites
@@ -367,9 +405,11 @@ var router = express.Router();
 						category: category
 					}}]
 				}).then(function(results) {
-					console.log("favorites results: " + JSON.stringify(results));
+					// console.log("favorites results: " + JSON.stringify(results));
 					if (results != null) {
 						var favorites = results.Favorites;
+					} else {
+						var favorites = {};
 					}
 
 					// object for loop that adds user id info 

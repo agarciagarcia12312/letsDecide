@@ -6,16 +6,16 @@ var yelp = require("../APIs/yelpAPI.js");
 module.exports = function(app) {
 	// route that add user
 	// cheks if username already exist-- needs work
-	app.post("/user", function(req, res) {
-		console.log("add user workin");
+	// app.post("/user", function(req, res) {
+	// 	console.log("add user workin");
 
-		db.Users.create(req.body).then(function(dbResults) {
-			// var encodedID = (dbResults.id + 173) * 9;
-				res.redirect("/");
-				// res.json(dbUsers);
-		});
+	// 	db.Users.create(req.body).then(function(dbResults) {
+	// 		// var encodedID = (dbResults.id + 173) * 9;
+	// 			res.redirect("/");
+	// 			// res.json(dbUsers);
+	// 	});
 		
-	});
+	// });
 
 	// //  user sign in authenthication and redirect
 	// app.post("/signIn", function(req,res) {
@@ -76,14 +76,14 @@ module.exports = function(app) {
 
 	// route that adds new bussines
 	// cheks if username already exist --needs work
-	app.post("/business", function(req, res) {
-		console.log("add bussines workin");
-		db.Business.create(req.body).then(function(dbBusiness) {
-			var encodedID = (dbBusiness.id + 173) * 9;
-			res.redirect("/business/main");
-			// res.json(dbBusiness);
-		});
-	})
+	// app.post("/business", function(req, res) {
+	// 	console.log("add bussines workin");
+	// 	db.Business.create(req.body).then(function(dbBusiness) {
+	// 		var encodedID = (dbBusiness.id + 173) * 9;
+	// 		res.redirect("/business/main");
+	// 		// res.json(dbBusiness);
+	// 	});
+	// })
 
 	// route that updates bussines
 	app.put("/business", function(req, res) {

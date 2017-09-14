@@ -35,6 +35,11 @@
               </ul>
               
                <h6> Welcome, {{businessUser}}!</h6>
+             {{#if businessUser}}
+               <a href='/signOut'>
+                <button class="btn btn-outline-info my-2 my-sm-0" type="submit" id="login" style="margin-left: 10%;" >Log out</button>
+              </a>
+             {{/if}} 
 
         </div>
     </nav>

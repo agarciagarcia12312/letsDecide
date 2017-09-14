@@ -6,19 +6,20 @@ var Yelp = require("../APIs/yelpAPI.js");
 var moment = require('moment-timezone');
 // passport setup
 var passport = require('passport')
- , LocalStrategy = require('passport-local').Strategy;
+ , LocalStrategy = require('passport-local').Strategy,
+   FacebookStrategy = require('passport-facebook').Strategy;
 
 passport.serializeUser(function(user, done) {
 	console.log("user info new: " + JSON.stringify(user))
-	console.log("user type:" +user.type)
+	// console.log("user type:" + user.type)
 	console.log("serialize User working");
 	console.log("object size" + Object.keys(user).length);
   done(null, user);
 });
 
 passport.deserializeUser(function(user, done) {
-	console.log("id: " + user.id);
-	console.log("type: " + user.type);
+	console.log("id: " + JSON.stringify(user));
+	// console.log("type: " + user.type);
 	if ( Object.keys(user).length < 7 ) {
 	  db.Users.findOne({where: {id:user.id}}). then(function(user) {
 	  	console.log("found it")
@@ -32,55 +33,101 @@ passport.deserializeUser(function(user, done) {
 	}
 });
 
-// passport.use('local-signup', new LocalStrategy({
-//     passReqToCallback : true
-//   },
-//   function(req, email, password, done) {
-//     findOrCreateUser = function(){
-//       // find a user in Mongo with provided username
-//       db.User.findOne({email:email}, function(err, user) {
-//         // In case of any error return
-//         if (err){
-//           console.log('Error in SignUp: '+err);
-//           return done(err);
-//         }
-//         // already exists
-//         else if (user) {
-//           console.log('User already exists');
-//           return done(null, false, 
-//              req.flash('message','User Already Exists'));
-//         } else {
-// 	          // if there is no user with that email
-// 	          // create the user
-// 	          var newUser = new User();
-// 	          // set the user's local credentials
-	          
-// 	          newUser.password = password;
-// 	          newUser.email = email;
-// 	          newUser.userName = req.param('userName');
-	      
- 
-//          	 // save the user
-//          	db.Users.create(newUser).then(function(err) {
-//             	if (err){
-//             	  console.log('Error in Saving user: '+err);  
-//             	  throw err;  
-//             	}
-//             	console.log('User Registration succesful');   
-//             	res.redirect("/"); 
-//             	return done(null, newUser.get());
-//           	});
-//         }
-//       })
-//     }
-     
-//     // Delay the execution of findOrCreateUser and execute 
-//     // the method in the next tick of the event loop
-//     // process.nextTick(findOrCreateUser);
-//   })
-// );	// 
+// ================== use passport -facebook =========================
+passport.use(new FacebookStrategy({
+    clientID: "1520008688037320",
+    clientSecret: "00599922a45da99db7e9d06127c04b94"
+  },
+  function(accessToken, refreshToken, profile, done) {
+  	console.log("facebook info"+ JSON.stringify(profile))
+    db.Users.findOrCreate({where: {
+    	id: profile.id,
+    	name: profile.first_name
+    }}).then(function(err, user) {
+      if (err) { return done(err); }
+      done(null, user);
+    });
+ }));   
 
-// / passport/login.js
+// user sign up and automatic log-in
+passport.use('local-signup', new LocalStrategy({
+   usernameField: "email",
+   passReqToCallback : true
+  },
+  function(req, email, password, done) {
+    findOrCreateUser = function(){
+    	console.log("works up tp here")
+    	console.log("email: " + JSON.stringify(req.body));
+    	console.log("password: " + password)
+      // find a user in Mongo with provided username
+      db.Users.findOne({where: {'email' : email}}).then(function( user) {
+      	console.log("db search suceesfull")
+        // In case of any error return
+        if (user) {
+          console.log('User already exists');
+          return done(null, false, 
+             req.flash('message','User Already Exists'));
+        } else {
+         	 // save the user
+         	db.Users.create(req.body).then(function(dbUser) {
+            	// if (err){
+            	//   console.log('Error in Saving user: '+err);  
+            	//   throw err;  
+            	// }
+            	console.log('User Registration succesful');   
+            	 
+            	return done(null, dbUser.get());
+          	});
+        }
+      })
+    }
+     
+    // Delay the execution of findOrCreateUser and execute 
+    // the method in the next tick of the event loop
+    process.nextTick(findOrCreateUser);
+  })
+);	
+
+//=====================  local business sign up===========================
+passport.use('local-business', new LocalStrategy({
+   usernameField: "email",
+   passReqToCallback : true
+  },
+  function(req, email, password, done) {
+    findOrCreateUser = function(){
+    	console.log("works up tp here")
+    	console.log("email: " + JSON.stringify(req.body));
+    	console.log("password: " + password)
+      // find a user in Mongo with provided username
+      db.Business.findOne({where: {'email' : email}}).then(function(user) {
+      	console.log("db search suceesfull")
+        // In case of any error return
+         if (user) {
+          console.log('User already exists');
+          return done(null, false, 
+             req.flash('message','User Already Exists'));
+        } else {
+         	 // save the user
+         	db.Business.create(req.body).then(function(dbUser) {
+            	// if (err){
+            	//   console.log('Error in Saving user: '+err);  
+            	//   throw err;  
+            	// }
+            	console.log('User Registration succesful');   
+            	 
+            	return done(null, dbUser.get());
+          	});
+        }
+      })
+    }
+     
+    // Delay the execution of findOrCreateUser and execute 
+    // the method in the next tick of the event loop
+    process.nextTick(findOrCreateUser);
+  })
+);	
+
+// ======================== use passport local strategy ====================
 passport.use('login', new LocalStrategy({
 	usernameField: "email",
     passReqToCallback : true
@@ -109,7 +156,7 @@ passport.use('login', new LocalStrategy({
           return done(null, false, 
               req.flash('message', 'Invalid Password'));
         }
-        user.type = 1; 
+       
         // console.log(JSON.stringify(user))
         // User and password both match, return user from 
         // done method which will be treated like success
@@ -158,14 +205,19 @@ passport.use('Blogin', new LocalStrategy({
 
 // ===================== end passport setu up ====================================
 
-
+// =======================================================================
 
 
 
 var router = express.Router();
 
-// ==========customer/user routes==============
+// ===================== customer/user routes =========================
 
+	router.get('/auth/facebook', passport.authenticate('facebook'));
+
+	router.get("auth/facebook/callback",
+		passport.authenticate('facebook', { successRedirect:'/',
+			failureRedirect:'/about'}));
 
 	// route to about page 
 	router.get("/about", function(req,res) {
@@ -180,16 +232,33 @@ var router = express.Router();
 	// }));
 
 	//  adds new user to database 
-	router.post("/user", function(req, res) {
-		console.log("add user workin");
+	router.post("/user", passport.authenticate(
+		'local-signup', {
+			successRedirect: '/',
+    		failureRedirect: '/user/new',
+    		failureFlash : true 
+		}
+	));
 
-		db.Users.create(req.body).then(function(dbResults) {
-			// var encodedID = (dbResults.id + 173) * 9;
-				res.redirect("/");
-				// res.json(dbUsers);
-		});
+	// router.post("/user", function(req, res) {
+	// 	console.log("add user workin");
+
+	// 	const user = new User({ email: req.body.email, password: req.body.password, name: req.body.name });
+
+	// 	db.Users.create(req.body).then(function(dbResults) {
+			
+	// 		console.log(JSON.stringify(req.body));
+	// 		req.login(user, function(err) {
+ //        		if (err) {
+ //          		console.log(err);
+ //        		}
+ //       			res.redirect('/about');
+ //     		});
+	// 		// res.redirect("/");
+	// 		// 	res.json(dbUsers);
+	// 	});
 		
-	});
+	// });
 
 	// cheks sign in request
 	 router.post('/signIn', passport.authenticate('login', {
@@ -314,10 +383,6 @@ var router = express.Router();
 			
 			// if user is signed in
 			if (req.user) {
-			
-
-
-
 				// cjeks databse for user info
 				db.Users.findOne({
 					where: {
@@ -458,9 +523,19 @@ var router = express.Router();
 		console.log("current working");
 		res.render("newUser");
 	});
-
+// =========================================================================
 // =============================business side routes ============================
+// ===========================================================================	
 	
+	router.post("/business", passport.authenticate(
+		'local-business', {
+			successRedirect: '/business/main',
+    		failureRedirect: '/business/new',
+    		failureFlash : true 
+		}
+	));
+
+
 	router.post("/bSignIN", passport.authenticate('Blogin', {
     	successRedirect: '/business/main',
     	failureRedirect: '/business/index',

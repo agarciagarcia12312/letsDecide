@@ -5,11 +5,6 @@ console.log(currentTime.getMinutes())
 
 // for loop that cheks time and assigns specific class depending on weather or not they are active
 
-
-for (i=0; i <15; i++) {
-	startTime = $("#startTime"+i);
-	endTime = $("#endTime"+i);
-}
  $(".card-grid").flip();
 
  function toggleMenuArrow() {
@@ -19,6 +14,33 @@ for (i=0; i <15; i++) {
 }
 
 $('.search-btn').on('click', toggleMenuArrow);
+
+
+
+
+// =================== facebook login =================
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '1520008688037320',
+      cookie     : true,
+      xfbml      : true,
+      version    : 'v2.10'
+    });
+    FB.AppEvents.logPageView();   
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+
+//  call to facebook to get login status
+FB.getLoginStatus(function(response) {
+    statusChangeCallback(response);
+});
 
 
 // ============= user authentication cookie ========================

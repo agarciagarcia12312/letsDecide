@@ -85,7 +85,7 @@ Home page content
 }
 
 #card-background3 {
-    
+
     background-image: url('../images/dice.jpg');
     background-size: contain;
     background-repeat: no-repeat;
@@ -353,7 +353,7 @@ styling the favorites results
     font-size: .4em;
     margin: 0px 0px 5% 0px;
     font-weight: normal;
-} 
+}
 #favPic {
     float: left;
     margin-top: 5%;
@@ -365,4 +365,27 @@ styling the favorites results
     margin-top: 5%;
     margin-right: 5%;
     float: right;
+}
+
+@media only screen and (max-width: 800px) {
+  .search-result {
+      height: 300px;
+      border: 2px solid #3e8793;
+      border-radius: 5px;
+      margin: 5px 10px;
+  }
+  #addFavorite{
+    float: right;
+    position: absolute;
+    right: 5px;
+    border-radius: 5px;
+    bottom: 10px;
+  }
+  .result-image{
+    width:50%;
+    height: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
